@@ -1,7 +1,7 @@
 import { navigate } from "../../router/router.js";
 import { post } from "../../service/api.js";
 
-const API_URL = "http://localhost:3000/auth";
+const API_URL = "https://cb-back-prueba.vercel.app/auth";
 
 export function LoginUser() {
   const form = document.getElementById("login-form");

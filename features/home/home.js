@@ -1,7 +1,7 @@
 import { get, post, update, deletes } from "../../service/api";
 import { navigate } from "../../router/router.js";
-const urlSearch = "http://localhost:3000/search";
-const urlVideos = "http://localhost:3000/videos";
+const urlSearch = "https://cb-back-prueba.vercel.app/search";
+const urlVideos = "https://cb-back-prueba.vercel.app/videos";
 
 async function loadRecentWorkshops() {
   try {
