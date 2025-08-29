@@ -3,6 +3,7 @@ import { LoginUser } from '../features/auth/login.js';
 import { homeUsers } from '../features/home/home.js';
 import { initWorkshop } from '../features/workshops/workshops.js';
 import { initVideoPlayer } from '../features/videos/video.js';
+import { initVideoUpload } from '../features/upload/uploadVideos.js';
 
 const protectedRoutes = ['/home', '/videos', '/workshop'];
 
@@ -67,6 +68,11 @@ function runPageScript(path) {
       homeUsers();
       break;
 
+    case '/uploadVideos':
+      console.log('Initializing Home...');
+      initVideoUpload();
+      break;
+
     case '/videos':
       console.log('Initializing Videos...');
       setTimeout(() => {
@@ -81,7 +87,7 @@ function runPageScript(path) {
       console.log('Initializing Workshop...');
       setTimeout(() => initWorkshop(), 0); // Espera a que el HTML se inserte
       break;
-
+z
     default:
       console.log('No script defined for this route.');
   }
