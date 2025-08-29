@@ -3,10 +3,57 @@ import { navigate } from "../../router/router.js";
 const urlSearch = "http://localhost:3000/search";
 const urlVideos = "http://localhost:3000/videos";
 
+async function loadRecentWorkshops() {
+  try {
+    const videos = await get(urlVideos);
+
+    if (!Array.isArray(videos)) return;
+
+    // Ordenar por fecha descendente
+    const sortedVideos = videos.sort((a, b) => new Date(b.video_date) - new Date(a.video_date));
+
+    // Tomar los tres más recientes
+    const recentVideos = sortedVideos.slice(0, 3);
+
+    const recentGrid = document.getElementById("recentWorkshopsGrid");
+    if (!recentGrid) return;
+
+    const cards = recentVideos
+      .map((item) => {
+        if (!item?.url) return "";
+        return `
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card h-100 shadow-sm border-0 overflow-hidden" style="border-radius: 12px;">
+              <div class="position-relative">
+                <div class="ratio ratio-16x9">
+                  <video src="${item.url}" style="border-top-left-radius: 12px; border-top-right-radius: 12px; cursor: pointer;" 
+                    onclick="navigateTo('/videos'); localStorage.setItem('currentVideo', JSON.stringify({ title: '${item.title?.replace(/'/g, "\\'")}', url: '${item.url?.replace(/'/g, "\\'")}' }));"></video>
+                </div>
+                <span class="position-absolute top-0 start-0 m-2 badge bg-success">🆕</span>
+              </div>
+              <div class="card-body p-3">
+                <h6 class="card-title fw-bold mb-1 text-truncate" title="${item.title}">🎬 ${item.title}</h6>
+                <p class="card-text small text-muted mb-0 text-truncate" title="${item.summary || ''}">${item.summary || ''}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+
+    recentGrid.innerHTML = cards;
+  } catch (error) {
+    console.error("Error loading recent workshops:", error);
+  }
+}
+
+
 export function homeUsers() {
   const searchBtn = document.getElementById("searchbtn");
   const resultsContainer = document.getElementById("searchResults");
   const viewContainer = document.querySelector('.view-container');
+
+  loadRecentWorkshops();
 
   function setHomeSectionsVisibility(show) {
     if (!viewContainer) return;
